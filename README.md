@@ -53,6 +53,8 @@ python tracker.py
   - [ ] 'Mom' mode: suggests you turn off the slop
   - [ ] 'Dad' mode: forcefully turns it off for you (real enforcement — block scrolling / close the tab, not just a warning)
     - [ ] Optional NSFW version that's more aggressive/verbal
+- [ ] **Tracker Customization**
+  - [ ] Allows the user to change the time of the tracker (and colour of the pop-up?)
 - [ ] **A dashboard with daily and weekly activity graphs (similar to ActivityWatch)**
   - [ ] Categorize activity (work, social, entertainment, etc.)
   - [ ] Predict future usage from past patterns
