@@ -1,6 +1,13 @@
 # Slopper (Slop/Brainrot stopper)
 This is a (personal) activity tracker that monitors on what and how much time you spend on your computer;
-More specifically on 'slop/brainrot' content (Youtube Shorts, Instagram Reels, Tiktok, etc).
+More specifically on 'slop/brainrot' content. Currently it runs on the following websites:
+| Status | Website | Notes |
+|------|------|------|
+| Works | Youtube Shorts |
+| Works | Instagram Reels |
+| Works| Tiktok |
+| Works | Facebook |
+| Partially | Twitter/X | The small (autoplaying) videos are the same size as grid previews, causing them to not be counted on the tracker.
 
 Slopper has two halves that work together: a **Python tracker** that watches
 your desktop applications (Currently still Work in progress), and a **Chrome extension** that watches your browser
@@ -45,10 +52,12 @@ python tracker.py
 
 ## Roadmap
 
-- [x] ~~**Get the project up and running in its basic form**~~
+- [X] ~~**Get the project up and running in its basic form**~~
 - [ ] **Track other sites**
-  - [ ] Instagram Reels
-  - [ ] TikTok
+  - [X] ~~Instagram Reels~~
+  - [X] ~~TikTok~~
+  - [X] ~~Facebook~~
+  - [X] ~~Twitter/X~~
 - [ ] **Add two modes ('Mom' & 'Dad')**
   - [ ] 'Mom' mode: suggests you turn off the slop
   - [ ] 'Dad' mode: forcefully turns it off for you (real enforcement — block scrolling / close the tab, not just a warning)
