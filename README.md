@@ -1,67 +1,59 @@
-# Slopper (Slop/Brainrot stopper)
-This is a (personal) activity tracker that monitors on what and how much time you spend on your computer;
-More specifically on 'slop/brainrot' content. Currently it runs on the following websites:
+<img src="assets/slopper-logo-text.png" width="420" alt="Slopper">
+
+**Helps you to stop watching slop/brainrot content, and allows you to track your activity on your PC.**
+
+# About Slopper
+This is a (personal) activity tracker that monitors on what you spend your time on, and how much; More specifically on 'brainrot/slop' content.
+
+Slopper has two halves that 'work together': 
+- **Chrome extension** - Detects when you're watching brainrot/slop content on certain websites, counts the time you *actively* spend on them (ignoring background
+  tabs), and saves the running total time of these.<br>
+  Once you pass a time limit, and depending on the mode you chose, the extension will (help) stop the watching of this content on those websites, and any further visits for that day.<br>
+- **Python tracker** - Application that watches your desktop applications, and can make future predictions based on your activity (Currently still work in progress).
+
+Currently it runs on the following websites:
+
 | Status | Website | Notes |
 |------|------|------|
-| Works | Youtube Shorts |
+| Works | YouTube Shorts |
 | Works | Instagram Reels |
-| Works| Tiktok |
+| Works | TikTok |
 | Works | Facebook |
-| Partially | Twitter/X | The small (autoplaying) videos are the same size as grid previews, causing them to not be counted on the tracker.
+| Partially | Twitter/X | The small (autoplaying) videos are the same size as grid previews, causing them to not be counted on the tracker. |
 
-Slopper has two halves that work together: a **Python tracker** that watches
-your desktop applications (Currently still Work in progress), and a **Chrome extension** that watches your browser
-and that *will* step in when you've been scrolling too long (Only for Youtube Shorts at the moment).
+## Installation
 
-## Current status: v0.1
-The first working version. 
-What it does:
+### Chrome Extension
 
-- **Desktop tracking (Python):** logs the active window — the application and
-  window title currently in focus — using the Windows API.
-- **Shorts tracker (Chrome extension):** detects when you're watching YouTube
-  Shorts, counts the time you *actively* spend on them (ignoring background
-  tabs), and saves the running total so it survives browser restarts.
-- **Intervention:** once you pass a time limit, a full-screen banner appears
-  over the Short as a nudge to stop.
+**Option A — download:** Download this ZIP and unpack it somewhere on your PC.
 
-## How it works
-
-| Part | Tech | Job |
-|------|------|-----|
-| `tracker.py` | Python, pywin32, psutil | Tracks the active desktop window |
-| `extension/` | JavaScript (Manifest V3) | Tracks & limits YouTube Shorts in-browser |
-
-The browser can't be tracked from the OS level and the desktop can't be tracked
-from inside the browser, so Slopper uses the right tool for each: Python for the
-computer, a Chrome extension for the web.
-
-## Running it
-
-**Desktop tracker:**
+**Option B — clone:**
 ```bash
-pip install pywin32 psutil
-python tracker.py
+git clone https://github.com/rick9117/slopper.git
 ```
+> ⚠️ Keep the folder where you put it. Chrome loads the extension from this
+> exact location — moving or deleting it will break the extension.
 
-**Chrome extension:**
 1. Go to `chrome://extensions`
-2. Enable **Developer mode** (top-right)
-3. Click **Load unpacked** and select the `extension/` folder
-4. Browse to YouTube Shorts - the timer runs automatically
+2. Enable **Developer mode** (toggle on, top-right)
+3. Click **Load unpacked**
+4. Select the **`extension/`** folder inside the project (not the project root)
+
+### Python Tracker (Work in progress)
+Not ready for use yet.
 
 ## Roadmap
 
 - [X] ~~**Get the project up and running in its basic form**~~
-- [ ] **Track other sites**
+- [X] ~~**Track other sites**~~
   - [X] ~~Instagram Reels~~
   - [X] ~~TikTok~~
   - [X] ~~Facebook~~
   - [X] ~~Twitter/X~~
-- [ ] **Add two modes ('Mom' & 'Dad')**
-  - [ ] 'Mom' mode: suggests you turn off the slop
-  - [ ] 'Dad' mode: forcefully turns it off for you (real enforcement — block scrolling / close the tab, not just a warning)
-    - [ ] Optional NSFW version that's more aggressive/verbal
+- [X] ~~**Add two modes ('Mom' & 'Dad')**~~
+  - [X] ~~'Mom' mode: suggests you turn off the slop.~~
+  - [X] ~~'Dad' mode: forcefully turns it off for you (real enforcement — block scrolling / close the tab, not just a warning).~~
+    - [X] ~~Optional NSFW version that's more aggressive/verbal~~
 - [ ] **Tracker Customization**
   - [ ] Allows the user to change the time of the tracker (and colour of the pop-up?)
 - [ ] **A dashboard with daily and weekly activity graphs (similar to ActivityWatch)**

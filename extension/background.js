@@ -1,12 +1,8 @@
-// Activates when you switch to a different TAB.
-chrome.tabs.onActivated.addListener(async (activeInfo) => {
-  const tab = await chrome.tabs.get(activeInfo.tabId);
-  console.log("Switched:", tab.title, "|", tab.url);
-});
-
-// Activates when a tab navigates to a new URL.
-chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-  if (changeInfo.url) {
-    console.log("Navigated:", tab.title, "|", changeInfo.url);
+// Closes the 'slop' tab when content.js asks for it.
+// This currently is only done during Dad mode.
+// Requires the "tabs" permission in manifest.json for chrome.tabs.remove().
+chrome.runtime.onMessage.addListener((message, sender) => {
+  if (message.type === "closeTab" && sender.tab) {
+    chrome.tabs.remove(sender.tab.id);
   }
 });
