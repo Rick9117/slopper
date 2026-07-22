@@ -19,6 +19,10 @@ const SITE_NAMES = {
   twitter:   "X (Twitter)",
 };
 
+// For the time slider.
+const limitSlider = document.getElementById("limit-slider");
+const limitValue = document.getElementById("limit-value");
+
 // References to the controls in popup.html.
 const radios = document.querySelectorAll('input[name="mode"]');
 const power = document.getElementById("power");
@@ -45,10 +49,15 @@ function paintPower(enabled) {
 
 // Runs when the popup opens: loads the saved settings from storage and makes the controls match them,
 // so the user's choices persist between sessions.
-chrome.storage.local.get(["mode", "enabled", "nsfw"]).then((data) => {
+chrome.storage.local.get(["mode", "enabled", "nsfw", "limitSeconds"]).then((data) => {
   const mode = data.mode || "mom";
   const enabled = data.enabled !== false;
   const nsfwOn = data.nsfw === true;
+
+  // The slider works in minutes, storage holds seconds.
+  const savedMinutes = Math.round((data.limitSeconds || DEFAULT_LIMIT_SECONDS) / 60);
+  limitSlider.value = savedMinutes;
+  limitValue.textContent = `${savedMinutes} min`;
 
   document.querySelector(`input[value="${mode}"]`).checked = true;
   power.checked = enabled;
@@ -134,6 +143,17 @@ async function paintTimer() {
 // Clicking the timer expands or collapses the per-site breakdown.
 document.getElementById("timer-toggle").addEventListener("click", () => {
   document.getElementById("breakdown").classList.toggle("open");
+});
+
+// Live label update while dragging (fires continuously).
+limitSlider.addEventListener("input", () => {
+  limitValue.textContent = `${limitSlider.value} min`;
+});
+
+// Saves only when the user lets go of the slider, then refresh the bar against the new limit.
+limitSlider.addEventListener("change", async () => {
+  await chrome.storage.local.set({ limitSeconds: Number(limitSlider.value) * 60 });
+  paintTimer();
 });
 
 paintTimer();

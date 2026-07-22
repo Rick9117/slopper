@@ -24,15 +24,18 @@ Currently it runs on the following websites:
 ## Installation
 
 ### Chrome Extension
+**Option A — If you ONLY want to USE the extension, add it from the Chrome Web Store here ->** [Slopper](https://chromewebstore.google.com/detail/agdjpbclibfpgkmhjmhjmopogmmnmmac?utm_source=item-share-cb)
 
-**Option A — download:** Download this ZIP and unpack it somewhere on your PC.
+*If you want to read/modify the code, do either of the following options below:*
 
-**Option B — clone:**
+**Option B — download:** Download this ZIP and unpack it somewhere on your PC.
+
+**Option C — clone:**
 ```bash
 git clone https://github.com/rick9117/slopper.git
 ```
-> ⚠️ Keep the folder where you put it. Chrome loads the extension from this
-> exact location — moving or deleting it will break the extension.
+> ⚠️ Keep the folder where you put it as Chrome loads the extension from this
+> exact location, moving or deleting it will break the extension.
 
 1. Go to `chrome://extensions`
 2. Enable **Developer mode** (toggle on, top-right)
