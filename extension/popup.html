@@ -59,6 +59,14 @@
     }
     #limit-value { font-weight: bold; color: #4caf50; }
 
+    #timer-arrow {
+      display: inline-block;
+      margin-left: 6px;
+      color: #aaa;
+      transition: transform 0.2s;
+    }
+    #timer-arrow.open { transform: rotate(180deg); }
+
     #limit-slider {
       width: 100%;
       -webkit-appearance: none;
@@ -157,7 +165,10 @@
   <div class="timer" id="timer-toggle">
     <div class="timer-head">
       <span id="timer-time">0m 0s</span>
-      <span id="timer-limit">/ 10m 0s</span>
+      <span>
+        <span id="timer-limit">/ 10m 0s</span>
+        <span id="timer-arrow">▾</span>
+      </span>
     </div>
     <div class="bar-track">
       <div class="bar-fill" id="bar-fill"></div>

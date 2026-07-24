@@ -57,8 +57,8 @@ Not ready for use yet.
   - [X] ~~'Mom' mode: suggests you turn off the slop.~~
   - [X] ~~'Dad' mode: forcefully turns it off for you (real enforcement — block scrolling / close the tab, not just a warning).~~
     - [X] ~~Optional NSFW version that's more aggressive/verbal~~
-- [ ] **Tracker Customization**
-  - [ ] Allows the user to change the time of the tracker (and colour of the pop-up?)
+- [X] **Tracker Customization**
+  - [X] ~~Allows the user to change the time of the tracker (and colour of the pop-up?)~~
 - [ ] **A dashboard with daily and weekly activity graphs (similar to ActivityWatch)**
   - [ ] Categorize activity (work, social, entertainment, etc.)
   - [ ] Predict future usage from past patterns

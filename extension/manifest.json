@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Slopper (Brainrot/Slop stopper)",
-  "version": "0.3",
+  "version": "0.5",
   "description": "Tracks your time spent on Brainrot/Slop content, and stops you from watching more.",
   "permissions": ["tabs", "storage"],
   "icons": {

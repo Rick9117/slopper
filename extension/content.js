@@ -1,7 +1,11 @@
 const DEBUG = false;   // Needs to be set to 'true' to see console output.
 if (DEBUG) console.log("Slopper: content script loaded");
 
-let dismissed = false;  // Checks if the user clicked 'Continue' during mom mode.
+// Mom mode snooze settings
+let snoozeUntil = null;
+let snoozeCount = 0;      // 0 = not yet dismissed
+const SNOOZE_MS = 5 * 60 * 1000;   // 5 minutes
+
 let lastMode = null;    // Clears previous mode's UI when it detects a switch.
 let closeAt = null;     // Timestamps when the tab should close during dad mode.
 
@@ -68,11 +72,16 @@ function unmuteAllVideos() {
 
 // Returns the banner text for the current mode. The NSFW toggle swaps in
 // stronger wording without changing any of the behaviour.
-function getHeadline(mode, nsfw) {
+function getHeadline(mode, nsfw, snoozed) {
   if (mode === "dad") {
     return nsfw
       ? `ENOUGH! You've watched enough of this fucking slop, turn this shit off!`
       : `No more slop for you today, go do something with your life!`;
+  }
+  if (snoozed) {
+    return nsfw
+      ? `Have you finished watching this fucking slop yet?`
+      : `Have you finished watching your little videos yet?`;
   }
   return nsfw
     ? `That's enough rotting for today.<br>Stop being so fucking lazy perhaps?`
@@ -80,15 +89,14 @@ function getHeadline(mode, nsfw) {
 }
 
 // Settings for the banner that pops up when the time limit is reached.
-function showBanner(totalSeconds, times, mode, nsfw, secondsLeft) {
+function showBanner(totalSeconds, times, mode, nsfw, secondsLeft, snoozed) {
   let overlay = document.getElementById("slopper-banner");
 
   const isDad = mode === "dad";
-  const headline = getHeadline(mode, nsfw);
+  const headline = getHeadline(mode, nsfw, snoozed);
 
-  // The overlay is only built once, so it remembers which mode/NSFW combination built it.
-  // If either changes, the old overlay is torn down and rebuilt.
-  const stamp = `${mode}-${nsfw}`;
+  // Rebuild if the mode, NSFW setting, or snooze wording changed.
+  const stamp = `${mode}-${nsfw}-${snoozed}`;
   if (overlay && overlay.dataset.stamp !== stamp) {
     overlay.remove();
     overlay = null;
@@ -123,7 +131,7 @@ function showBanner(totalSeconds, times, mode, nsfw, secondsLeft) {
     // Only Mom mode gets an escape hatch.
     if (!isDad) {
       const closeBtn = document.createElement("button");
-      closeBtn.textContent = "Continue anyway";
+      closeBtn.textContent = snoozed ? "Just 5 more minutes!" : "Continue anyway";
       Object.assign(closeBtn.style, {
         marginTop: "30px", padding: "12px 28px",
         fontSize: "18px", fontWeight: "bold",
@@ -132,7 +140,8 @@ function showBanner(totalSeconds, times, mode, nsfw, secondsLeft) {
       });
       closeBtn.addEventListener("click", () => {
         overlay.remove();
-        dismissed = true;
+        snoozeUntil = Date.now() + SNOOZE_MS;
+        snoozeCount++;
       });
       box.appendChild(closeBtn);
     }
@@ -218,7 +227,8 @@ setInterval(async () => {
     document.getElementById("slopper-banner")?.remove();
     document.getElementById("slopper-mini")?.remove();
     unmuteAllVideos();
-    dismissed = false;
+    snoozeUntil = null;
+    snoozeCount = 0;;
     closeAt = null;
     lastMode = mode;
   }
@@ -234,7 +244,8 @@ setInterval(async () => {
       document.getElementById("slopper-banner")?.remove();
       document.getElementById("slopper-mini")?.remove();
       unmuteAllVideos();
-      dismissed = false;
+      snoozeUntil = null;
+      snoozeCount = 0;;
       closeAt = null;
       await chrome.storage.local.set({ dadTriggered: false });
     }
@@ -264,12 +275,18 @@ setInterval(async () => {
         }
 
         const secondsLeft = Math.ceil((closeAt - Date.now()) / 1000);
-        showBanner(total, times, mode, nsfw, secondsLeft);
+        showBanner(total, times, mode, nsfw, secondsLeft, false);
 
-      } else if (dismissed) {
-        showMiniWidget(total);
       } else {
-        showBanner(total, times, mode, nsfw, null);
+        // Mom mode: quiet while snoozing, banner again once the snooze expires.
+        const snoozing = snoozeUntil !== null && Date.now() < snoozeUntil;
+
+        if (snoozing) {
+          showMiniWidget(total);
+        } else {
+          document.getElementById("slopper-mini")?.remove();
+          showBanner(total, times, mode, nsfw, null, snoozeCount > 0);
+        }
       }
     }
   }

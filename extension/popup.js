@@ -142,7 +142,8 @@ async function paintTimer() {
 
 // Clicking the timer expands or collapses the per-site breakdown.
 document.getElementById("timer-toggle").addEventListener("click", () => {
-  document.getElementById("breakdown").classList.toggle("open");
+  const open = document.getElementById("breakdown").classList.toggle("open");
+  document.getElementById("timer-arrow").classList.toggle("open", open);
 });
 
 // Live label update while dragging (fires continuously).
